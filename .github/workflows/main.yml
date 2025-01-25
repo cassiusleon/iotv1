@@ -8,7 +8,8 @@ on:
 
 jobs:
   run-container:
-    runs-on: self-hosted  # Use the self-hosted runner
+    runs-on: [self-hosted, windows, x64]
+    # Use the self-hosted runner
     steps:
       # Step 1: Checkout the code
       - name: Checkout Repository
