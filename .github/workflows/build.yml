@@ -1,0 +1,36 @@
+name: Run Ubuntu Container on GitHub-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-container:
+    runs-on: ubuntu-latest  # Use GitHub-hosted Ubuntu runner
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Pull and Run Ubuntu Container
+      - name: Pull and Run Ubuntu Container
+        run: |
+          docker pull ubuntu:latest  # Pull the latest Ubuntu image
+          docker run -d --name ubuntu_container ubuntu:latest sleep infinity  # Run the container in detached mode
+
+      # Step 3: Execute a Command Inside the Container
+      - name: Run Commands in Container
+        run: |
+          docker exec ubuntu_container bash -c "apt-get update && apt-get install -y curl"  # Example command
+
+      # Step 4: List Running Containers
+      - name: Verify Running Containers
+        run: docker ps
+
+      # Step 5: Stop and Remove the Container
+      - name: Cleanup
+        run: |
+          docker stop ubuntu_container
+          docker rm ubuntu_container
